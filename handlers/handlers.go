@@ -4,7 +4,11 @@ import (
 	"encoding/json"
 	"go-api-book/models"
 	"io"
+	"log"
 	"net/http"
+	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 // HelloHandler /hello のハンドラ
@@ -27,12 +31,31 @@ func PostArticleHandler(w http.ResponseWriter, r *http.Request) {
 
 // ArticleListHandler /article/list のハンドラ
 func ArticleListHandler(w http.ResponseWriter, r *http.Request) {
+	queryMap := r.URL.Query()
+	// クエリパラメータ page を取得
+	var page int
+	if p, ok := queryMap["page"]; ok && len(p) > 0 {
+		var err error
+		page, err = strconv.Atoi(p[0])
+		if err != nil {
+			http.Error(w, "Invalid query parameter", http.StatusBadRequest)
+			return
+		}
+	} else {
+		page = 1
+	}
+
+	log.Println(page)
+
 	articles := []models.Article{models.Article1, models.Article2}
 	json.NewEncoder(w).Encode(articles)
 }
 
 // ArticleDetailHandler /article/1 のハンドラ
 func ArticleDetailHandler(w http.ResponseWriter, r *http.Request) {
+	articleID := mux.Vars(r)["id"]
+	log.Println(articleID)
+
 	article := models.Article1
 	json.NewEncoder(w).Encode(article)
 }
