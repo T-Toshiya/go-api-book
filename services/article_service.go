@@ -27,18 +27,11 @@ func GetArticleService(articleID int) (models.Article, error) {
 	return article, nil
 }
 
-func PostArticleService(article models.Article) (models.Article, error) {
-	db, err := connectDB()
+func (s *MyAppService) PostArticleService(article models.Article) (models.Article, error) {
+	newArticle, err := repositories.InsertArticle(s.db, article)
 	if err != nil {
 		return models.Article{}, err
 	}
-	defer db.Close()
-
-	newArticle, err := repositories.InsertArticle(db, article)
-	if err != nil {
-		return models.Article{}, err
-	}
-
 	return newArticle, nil
 }
 
