@@ -20,7 +20,7 @@ func NewMyAppController(s *services.MyAppService) *MyAppController {
 }
 
 // HelloHandler /hello のハンドラ
-func HelloHandler(w http.ResponseWriter, r *http.Request) {
+func (c *MyAppController) HelloHandler(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, "Hello, world!\n")
 }
 
