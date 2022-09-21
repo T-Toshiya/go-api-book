@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"encoding/json"
+	"go-api-book/controllers/services"
 	"go-api-book/models"
-	"go-api-book/services"
 	"io"
 	"net/http"
 	"strconv"
@@ -12,10 +12,10 @@ import (
 )
 
 type MyAppController struct {
-	service *services.MyAppService
+	service services.MyAppServicer
 }
 
-func NewMyAppController(s *services.MyAppService) *MyAppController {
+func NewMyAppController(s services.MyAppServicer) *MyAppController {
 	return &MyAppController{service: s}
 }
 
