@@ -4,12 +4,11 @@ import (
 	"database/sql"
 	"fmt"
 	"go-api-book/controllers"
+	"go-api-book/routers"
 	"go-api-book/services"
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/gorilla/mux"
 )
 
 var (
@@ -28,14 +27,7 @@ func main() {
 
 	ser := services.NewMyAppService(db)
 	con := controllers.NewMyAppController(ser)
-	r := mux.NewRouter()
-
-	r.HandleFunc("/hello", con.HelloHandler).Methods(http.MethodGet)
-	r.HandleFunc("/article", con.PostArticleHandler).Methods(http.MethodPost)
-	r.HandleFunc("/article/list", con.ArticleListHandler).Methods(http.MethodGet)
-	r.HandleFunc("/article/{id:[0-9]+}", con.ArticleDetailHandler).Methods(http.MethodGet)
-	r.HandleFunc("/article/nice", con.PostNiceHandler).Methods(http.MethodPost)
-	r.HandleFunc("/article/comment", con.PostCommentHandler).Methods(http.MethodPost)
+	r := routers.NewRouter(con)
 
 	log.Println("server start at port 3000")
 	log.Fatal(http.ListenAndServe(":3000", r))
