@@ -3,9 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"go-api-book/controllers"
-	"go-api-book/routers"
-	"go-api-book/services"
+	"go-api-book/api"
 	"log"
 	"net/http"
 	"os"
@@ -25,9 +23,7 @@ func main() {
 		return
 	}
 
-	ser := services.NewMyAppService(db)
-	con := controllers.NewMyAppController(ser)
-	r := routers.NewRouter(con)
+	r := api.NewRouter(db)
 
 	log.Println("server start at port 3000")
 	log.Fatal(http.ListenAndServe(":3000", r))
